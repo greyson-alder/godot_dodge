@@ -1,11 +1,14 @@
 using Godot;
 using System;
 
-public partial class player : Area2D
+public partial class Player : Area2D
 {
 	[Export]
 	public int Speed = 400;
 	public Vector2 ScreenSize;
+
+	[Signal]
+	public delegate void HitEventHandler();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -60,10 +63,7 @@ public partial class player : Area2D
 		);
 	}
 
-	[Signal]
-	public delegate void HitEventHandler();
-
-	private void OnBodyEntered(PhysicsBody3D body)
+	private void OnBodyEntered(PhysicsBody2D body)
 	{
 		Hide();
 		EmitSignal(SignalName.Hit);
