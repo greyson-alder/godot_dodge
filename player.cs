@@ -60,4 +60,24 @@ public partial class player : Area2D
 		);
 	}
 
+	[Signal]
+	public delegate void HitEventHandler();
+
+	private void OnBodyEntered(PhysicsBody3D body)
+	{
+		Hide();
+		EmitSignal(SignalName.Hit);
+		// the following line has a function which is deferred, which turns off the collision
+		// this means that the collision event can only happen once
+		// the deferral is required as we need it to occur following the collision processing
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+	}
+
+	public void Start(Vector2 position)
+	{
+		Position = position;
+		Show();
+		GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+	}
+
 }
