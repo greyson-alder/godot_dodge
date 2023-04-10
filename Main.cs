@@ -24,6 +24,8 @@ public partial class Main : Node
 	{
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
+
+		GetNode<HUD>("HUD").ShowGameOverMessage();
 	}
 
 	public void NewGame()
@@ -35,11 +37,21 @@ public partial class Main : Node
 		player.Start(startPosition.Position);
 
 		GetNode<Timer>("StartTimer").Start();
+
+		var hud = GetNode<HUD>("HUD");
+		// score is being passed down to the HUD here
+		hud.UpdateScore(_score);
+		hud.ShowVariableMessage("Get Ready!");
+
+		// the QueueFree method here deletes the node
+		GetTree().CallGroup("allMobs", Node.MethodName.QueueFree);
+
 	}
 
 	private void OnScoreTimerTimeout()
 	{
 		_score++;
+		GetNode<HUD>("HUD").UpdateScore(_score);
 	}
 
 	private void OnStartTimerTimeout()
