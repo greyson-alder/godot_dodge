@@ -26,6 +26,9 @@ public partial class Main : Node
 		GetNode<Timer>("ScoreTimer").Stop();
 
 		GetNode<HUD>("HUD").ShowGameOverMessage();
+
+		GetNode<AudioStreamPlayer>("BackgroundMusic").Stop();
+		GetNode<AudioStreamPlayer>("DeathSound").Play();
 	}
 
 	public void NewGame()
@@ -45,6 +48,8 @@ public partial class Main : Node
 
 		// the QueueFree method here deletes the node
 		GetTree().CallGroup("allMobs", Node.MethodName.QueueFree);
+
+		GetNode<AudioStreamPlayer>("BackgroundMusic").Play();
 
 	}
 
